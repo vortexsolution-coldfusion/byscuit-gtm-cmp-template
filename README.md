@@ -38,6 +38,8 @@ All consent logic is handled by the Byscuit CMP itself.
 - It does **not** set Consent Mode defaults or updates
 - It does **not** send analytics or advertising hits
 
+This template does not push custom events to the dataLayer. It only applies optional Google configuration flags using GTM’s gtagSet API.
+
 All consent defaults, updates, persistence, and user interactions are handled by the **Byscuit CMP client script**.
 
 ---
@@ -71,7 +73,7 @@ This ensures the CMP SDK loads as early as possible in the page lifecycle.
 |------|------------|
 | **Byscuit Project ID** | Your Byscuit project identifier used to load the CMP client script |
 
-The CMP client SDK is loaded from: https://api.byscuit.com/data/client/{PROJECT_ID}/script/script.js
+The CMP client SDK is loaded from: https://api.byscuit.com/data/client/{projectId}/script/script.js
 
 
 ---
