@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [1.1.0] – 2026-04-15
+
+### Changed
+
+- Minor updates to `___INFO___` section in `template.tpl`
+
 ## [1.0.0] – 2025-12-23
 
 ### Added
