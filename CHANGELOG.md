@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [1.1.0] – 2026-04-15
+
+
+### Added
+
+- [`template.tpl`] Added `NOTES, TESTS, SANDBOXED_JS_FOR_WEB_TEMPLATE` sections
+
+### Changed
+
+- [`template.tpl`] Updates to `INFO, TEMPLATE_PARAMETERS, TESTS, WEB_PERMISSIONS` sections
+- [`template.tpl`] Removed `SANDBOXED_JS` for `SANDBOXED_JS_FOR_WEB_TEMPLATE`
+
 ## [1.0.0] – 2025-12-23
 
 ### Added
