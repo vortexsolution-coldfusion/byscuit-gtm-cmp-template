@@ -1,6 +1,6 @@
 ﻿# Byscuit CMP – Google Tag Manager Template
 
-This repository contains the official **Google Tag Manager (GTM) Custom Template** for integrating the **Byscuit Consent Management Platform (CMP)** with **Google Consent Mode v2**.
+This repository contains the official **Google Tag Manager (GTM) Custom Template** for integrating the **Byscuit Consent Management Platform (CMP)** compatible with **Google Consent Mode v2**.
 
 The template is designed to safely inject the Byscuit CMP client SDK and apply optional Google configuration flags, while ensuring correct tag ordering and predictable behavior in GTM environments.
 
