@@ -7,12 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 
-## [1.1.0] – 2026-04-16
+## [1.0.3] – 2026-04-20
+
+### Added
+- Added `metadata.yaml` file to project
+
+### Changed
+- Re-organized `CHANGELOG.md` versions
+
+## [1.0.2] – 2026-04-16
 
 ### Added
 - [`template.tpl`] Added Default values for Consent Mode
 
-## [1.1.0] – 2026-04-15
+## [1.0.1] – 2026-04-15
 
 ### Added
 - [`template.tpl`] Added `NOTES, TESTS, SANDBOXED_JS_FOR_WEB_TEMPLATE` sections

@@ -1,0 +1,12 @@
+homepage: "https://www.byscuit.com"
+documentation: "https://github.com/vortexsolution-coldfusion/byscuit-gtm-cmp-template/blob/master/README.md"
+versions:
+  # Latest version
+  - sha: 5bed24bf727c7943e114f402ba23bf93ca86fe1b
+    changeNotes: Add Consent Mode defaults
+  # Older versions
+  - sha: 2cccdc16861b1566ab0632086131ba57367151c1
+    changeNotes: Add NOTES, TESTS, SANDBOXED_JS_FOR_WEB_TEMPLATE sections
+  - sha: 87f908ed25bdb4cd27d9f8686af3bf396360d879
+    changeNotes: Initial public release
+ 
