@@ -52,124 +52,100 @@ ___TEMPLATE_PARAMETERS___
     "name": "setAdsDataRedaction",
     "checkboxText": "Enable ads data redaction (ads_data_redaction)",
     "simpleValueType": true,
-    "defaultValue": false,
     "displayName": "Ads data redaction",
-    "help": "When enabled, Google Ads data is redacted to prevent ad click identifiers and related advertising data from being stored or processed. Recommended when advertising consent is denied or restricted."
+    "help": "When enabled, Google Ads data is redacted to prevent ad click identifiers and related advertising data from being stored or processed. Recommended when advertising consent is denied or restricted.",
+    "defaultValue": false
   },
   {
     "type": "CHECKBOX",
     "name": "setUrlPassthrough",
-    "checkboxText": "Enable URL parameter passthrough (url_passthrough)",
+    "checkboxText": "Pass through URL parameters (url_passthrough)",
     "simpleValueType": true,
-    "defaultValue": false,
+    "help": "When enabled, Google tags append consent-related parameters to URLs to preserve consent state across redirects or cross-domain navigation. Typically required for conversion tracking in multi-domain or redirect-based flows.",
     "displayName": "URL parameter passthrough",
-    "help": "When enabled, Google tags append consent-related parameters to URLs to preserve consent state across redirects or cross-domain navigation. Typically required for conversion tracking in multi-domain or redirect-based flows."
+    "defaultValue": false
   },
   {
     "type": "CHECKBOX",
     "name": "debug",
     "checkboxText": "Enable debug logging",
     "simpleValueType": true,
-    "defaultValue": false,
     "displayName": "Debug logging",
-    "help": "Outputs diagnostic messages to the browser console to help with troubleshooting and verification."
+    "help": "Outputs diagnostic messages to the browser console to help with troubleshooting and verification.",
+    "defaultValue": false
   }
 ]
 
 
 ___SANDBOXED_JS_FOR_WEB_TEMPLATE___
 
-/**
- * Byscuit CMP – GTM Template Tag (SDK Loader)
- *
- * Copyright 2025 Byscuit
- * Licensed under the Apache License, Version 2.0
- *
- * Purpose
- * -------
- * This tag injects the Byscuit CMP client script:
- *   https://api.byscuit.com/data/client/{PROJECT_ID}/script/script.js
- *
- * Expected usage
- * --------------
- * - Trigger: "Consent Initialization – All Pages"
- * - The injected Byscuit script is responsible for:
- *   - Consent Mode default state
- *   - Consent restoration (if stored)
- *   - User interactions and consent updates
- *
- * This tag does NOT:
- * - Set Google Consent Mode defaults/updates
- * - Read or write cookies
- * - Determine consent categories (handled by the CMP)
- * - Send tracking hits
- */
+const logToConsole = require('logToConsole');
+const getCookieValues = require('getCookieValues');
+const setDefaultConsentState = require('setDefaultConsentState');
+const updateConsentState = require('updateConsentState');
+const injectScript = require('injectScript');
+const encodeUriComponent = require('encodeUriComponent');
+const setInWindow = require('setInWindow');
 
-var logToConsole = require('logToConsole');
-var injectScript = require('injectScript');
-var encodeUriComponent = require('encodeUriComponent');
-var gtagSet = require('gtagSet');
+const projectId = data.projectId;
 
-/**
- * Project ID (GTM template field)
- * @type {string}
- */
-var projectId = data.projectId;
+// État par défaut pour la première visite
+setDefaultConsentState({
+  ad_storage: 'denied',
+  analytics_storage: 'denied',
+  ad_user_data: 'denied',
+  ad_personalization: 'denied',
+  functionality_storage: 'denied',
+  personalization_storage: 'denied',
+  security_storage: 'granted',
+  wait_for_update: 500
+});
 
-/**
- * Enable verbose console logs (GTM template field)
- * @type {boolean}
- */
-var debug = !!data.debug;
-
-/**
- * Log helper
- * @param {string} msg
- */
-function log(msg) {
-  if (debug) logToConsole('[Byscuit CMP] ' + msg);
-}
-
-log('Init');
-
-// Validate projectId
-if (!projectId || typeof projectId !== 'string') {
-  logToConsole('[Byscuit CMP] ERROR: Missing Project ID.');
-  data.gtmOnFailure();
-  return;
-}
-
-// Optional Google settings
-if (data.setAdsDataRedaction === true) {
-  gtagSet('ads_data_redaction', true);
-  log('ads_data_redaction enabled');
-}
-
-if (data.setUrlPassthrough === true) {
-  gtagSet('url_passthrough', true);
-  log('url_passthrough enabled');
-}
-
-// Build SDK URL
-var url =
-  'https://api.byscuit.com/data/client/' +
-  encodeUriComponent(projectId) +
-  '/script/script.js';
-
-log('Injecting SDK: ' + url);
-
-// Inject Byscuit client script
-injectScript(
-  url,
-  function onSuccess() {
-    log('SDK injected OK');
-    data.gtmOnSuccess();
-  },
-  function onFailure() {
-    logToConsole('[Byscuit CMP] ERROR: SDK injection failed');
-    data.gtmOnFailure();
+// Mise à jour immédiate si cookie existant
+let cookie = getCookieValues('cc_cookie_byscuit');
+if (cookie && cookie.length > 0) {
+  let currentConsent = {
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    analytics_storage: 'denied',
+    functionality_storage: 'denied',
+    personalization_storage: 'denied',
+    security_storage: 'granted'
+  };
+  
+  let val = cookie[0];
+  // Traduction des catégories Byscuit vers Google Consent Mode
+  if (val.indexOf('analytics') !== -1) currentConsent.analytics_storage = 'granted';
+  if (val.indexOf('functional') !== -1) currentConsent.functionality_storage = 'granted';
+  if (val.indexOf('advertisement') !== -1) {
+    currentConsent.ad_storage = 'granted';
+    currentConsent.ad_user_data = 'granted';
+    currentConsent.ad_personalization = 'granted';
+    currentConsent.personalization_storage = 'granted';
   }
-);
+ updateConsentState(currentConsent); 
+}
+
+// On signale au script externe de ne pas relancer de "default"
+setInWindow('BYSCUIT_GTM_MANAGED', true, true);
+
+// --- 3. INJECTION DU SCRIPT (PRODUCTION) ---
+
+if (projectId) {
+  let url = 'https://api.byscuit.com/data/client/' + encodeUriComponent(projectId) + '/script/script.js';
+
+  injectScript(url, function() {
+    logToConsole('[Byscuit CMP] SDK Production injecté');
+    data.gtmOnSuccess();
+  }, function() {
+    logToConsole('[Byscuit CMP] Échec de l\'injection SDK');
+    data.gtmOnFailure();
+  });
+} else {
+  logToConsole('[Byscuit CMP] Erreur: Project ID manquant');
+  data.gtmOnFailure();
+}
 
 
 ___WEB_PERMISSIONS___
@@ -215,6 +191,10 @@ ___WEB_PERMISSIONS___
               {
                 "type": 1,
                 "string": "https://api.byscuit.com/data/client/*/script/script.js?*"
+              },
+              {
+                "type": 1,
+                "string": "https://api.byscuit.com/*"
               }
             ]
           }
@@ -229,10 +209,364 @@ ___WEB_PERMISSIONS___
   {
     "instance": {
       "key": {
-        "publicId": "write_data_layer",
+        "publicId": "access_consent",
         "versionId": "1"
       },
-      "param": []
+      "param": [
+        {
+          "key": "consentTypes",
+          "value": {
+            "type": 2,
+            "listItem": [
+              {
+                "type": 3,
+                "mapKey": [
+                  {
+                    "type": 1,
+                    "string": "consentType"
+                  },
+                  {
+                    "type": 1,
+                    "string": "read"
+                  },
+                  {
+                    "type": 1,
+                    "string": "write"
+                  }
+                ],
+                "mapValue": [
+                  {
+                    "type": 1,
+                    "string": "ad_storage"
+                  },
+                  {
+                    "type": 8,
+                    "boolean": false
+                  },
+                  {
+                    "type": 8,
+                    "boolean": true
+                  }
+                ]
+              },
+              {
+                "type": 3,
+                "mapKey": [
+                  {
+                    "type": 1,
+                    "string": "consentType"
+                  },
+                  {
+                    "type": 1,
+                    "string": "read"
+                  },
+                  {
+                    "type": 1,
+                    "string": "write"
+                  }
+                ],
+                "mapValue": [
+                  {
+                    "type": 1,
+                    "string": "ad_user_data"
+                  },
+                  {
+                    "type": 8,
+                    "boolean": false
+                  },
+                  {
+                    "type": 8,
+                    "boolean": true
+                  }
+                ]
+              },
+              {
+                "type": 3,
+                "mapKey": [
+                  {
+                    "type": 1,
+                    "string": "consentType"
+                  },
+                  {
+                    "type": 1,
+                    "string": "read"
+                  },
+                  {
+                    "type": 1,
+                    "string": "write"
+                  }
+                ],
+                "mapValue": [
+                  {
+                    "type": 1,
+                    "string": "ad_personalization"
+                  },
+                  {
+                    "type": 8,
+                    "boolean": false
+                  },
+                  {
+                    "type": 8,
+                    "boolean": true
+                  }
+                ]
+              },
+              {
+                "type": 3,
+                "mapKey": [
+                  {
+                    "type": 1,
+                    "string": "consentType"
+                  },
+                  {
+                    "type": 1,
+                    "string": "read"
+                  },
+                  {
+                    "type": 1,
+                    "string": "write"
+                  }
+                ],
+                "mapValue": [
+                  {
+                    "type": 1,
+                    "string": "analytics_storage"
+                  },
+                  {
+                    "type": 8,
+                    "boolean": false
+                  },
+                  {
+                    "type": 8,
+                    "boolean": true
+                  }
+                ]
+              },
+              {
+                "type": 3,
+                "mapKey": [
+                  {
+                    "type": 1,
+                    "string": "consentType"
+                  },
+                  {
+                    "type": 1,
+                    "string": "read"
+                  },
+                  {
+                    "type": 1,
+                    "string": "write"
+                  }
+                ],
+                "mapValue": [
+                  {
+                    "type": 1,
+                    "string": "functionality_storage"
+                  },
+                  {
+                    "type": 8,
+                    "boolean": false
+                  },
+                  {
+                    "type": 8,
+                    "boolean": true
+                  }
+                ]
+              },
+              {
+                "type": 3,
+                "mapKey": [
+                  {
+                    "type": 1,
+                    "string": "consentType"
+                  },
+                  {
+                    "type": 1,
+                    "string": "read"
+                  },
+                  {
+                    "type": 1,
+                    "string": "write"
+                  }
+                ],
+                "mapValue": [
+                  {
+                    "type": 1,
+                    "string": "personalization_storage"
+                  },
+                  {
+                    "type": 8,
+                    "boolean": false
+                  },
+                  {
+                    "type": 8,
+                    "boolean": true
+                  }
+                ]
+              },
+              {
+                "type": 3,
+                "mapKey": [
+                  {
+                    "type": 1,
+                    "string": "consentType"
+                  },
+                  {
+                    "type": 1,
+                    "string": "read"
+                  },
+                  {
+                    "type": 1,
+                    "string": "write"
+                  }
+                ],
+                "mapValue": [
+                  {
+                    "type": 1,
+                    "string": "security_storage"
+                  },
+                  {
+                    "type": 8,
+                    "boolean": false
+                  },
+                  {
+                    "type": 8,
+                    "boolean": true
+                  }
+                ]
+              },
+              {
+                "type": 3,
+                "mapKey": [
+                  {
+                    "type": 1,
+                    "string": "consentType"
+                  },
+                  {
+                    "type": 1,
+                    "string": "read"
+                  },
+                  {
+                    "type": 1,
+                    "string": "write"
+                  }
+                ],
+                "mapValue": [
+                  {
+                    "type": 1,
+                    "string": "cc_cookie_byscuit"
+                  },
+                  {
+                    "type": 8,
+                    "boolean": true
+                  },
+                  {
+                    "type": 8,
+                    "boolean": false
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "clientAnnotations": {
+      "isEditedByUser": true
+    },
+    "isRequired": true
+  },
+  {
+    "instance": {
+      "key": {
+        "publicId": "get_cookies",
+        "versionId": "1"
+      },
+      "param": [
+        {
+          "key": "cookieAccess",
+          "value": {
+            "type": 1,
+            "string": "specific"
+          }
+        },
+        {
+          "key": "cookieNames",
+          "value": {
+            "type": 2,
+            "listItem": [
+              {
+                "type": 1,
+                "string": "cc_cookie_byscuit"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "clientAnnotations": {
+      "isEditedByUser": true
+    },
+    "isRequired": true
+  },
+  {
+    "instance": {
+      "key": {
+        "publicId": "access_globals",
+        "versionId": "1"
+      },
+      "param": [
+        {
+          "key": "keys",
+          "value": {
+            "type": 2,
+            "listItem": [
+              {
+                "type": 3,
+                "mapKey": [
+                  {
+                    "type": 1,
+                    "string": "key"
+                  },
+                  {
+                    "type": 1,
+                    "string": "read"
+                  },
+                  {
+                    "type": 1,
+                    "string": "write"
+                  },
+                  {
+                    "type": 1,
+                    "string": "execute"
+                  }
+                ],
+                "mapValue": [
+                  {
+                    "type": 1,
+                    "string": "BYSCUIT_GTM_MANAGED"
+                  },
+                  {
+                    "type": 8,
+                    "boolean": true
+                  },
+                  {
+                    "type": 8,
+                    "boolean": true
+                  },
+                  {
+                    "type": 8,
+                    "boolean": true
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "clientAnnotations": {
+      "isEditedByUser": true
     },
     "isRequired": true
   }
@@ -246,18 +580,6 @@ scenarios: []
 
 ___NOTES___
 
-This template injects the Byscuit CMP client SDK and applies optional Google Consent Mode configuration flags.
-
-Intended usage:
-- Trigger: Consent Initialization – All Pages
-- Consent defaults, updates, and persistence are handled by the Byscuit CMP client script.
-
-This template does not determine consent categories and does not push custom events to the dataLayer.
-Optional Google settings (ads_data_redaction, url_passthrough) are applied via gtagSet when enabled.
-
-Repository:
-https://github.com/vortexsolution-coldfusion/byscuit-gtm-cmp-template
-
-Initial version created for Google Consent Mode v2 compatibility.
+Created on 16/04/2026 11:05:26
 
 
