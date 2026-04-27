@@ -49,6 +49,24 @@ ___TEMPLATE_PARAMETERS___
   },
   {
     "type": "CHECKBOX",
+    "name": "setAdsDataRedaction",
+    "checkboxText": "Enable ads data redaction (ads_data_redaction)",
+    "simpleValueType": true,
+    "displayName": "Ads data redaction",
+    "help": "When enabled, Google Ads data is redacted to prevent ad click identifiers and related advertising data from being stored or processed. Recommended when advertising consent is denied or restricted.",
+    "defaultValue": false
+  },
+  {
+    "type": "CHECKBOX",
+    "name": "setUrlPassthrough",
+    "checkboxText": "Pass through URL parameters (url_passthrough)",
+    "simpleValueType": true,
+    "help": "When enabled, Google tags append consent-related parameters to URLs to preserve consent state across redirects or cross-domain navigation. Typically required for conversion tracking in multi-domain or redirect-based flows.",
+    "displayName": "URL parameter passthrough",
+    "defaultValue": false
+  },
+  {
+    "type": "CHECKBOX",
     "name": "debug",
     "checkboxText": "Enable debug logging",
     "simpleValueType": true,
