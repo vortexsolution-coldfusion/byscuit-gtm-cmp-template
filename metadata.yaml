@@ -2,7 +2,7 @@ homepage: "https://www.byscuit.com"
 documentation: "https://github.com/vortexsolution-coldfusion/byscuit-gtm-cmp-template/blob/master/README.md"
 versions:
   # Latest version
-  - sha: 
+  - sha: 26ede28439b6db0b830040e317980b3446e8cd46
     changeNotes: Change brand ID to brand_byscuit, add conditional debug flag, fix clientAnnotations WEB_PERMISSIONS mappings
   # Older versions
   - sha: 5bed24bf727c7943e114f402ba23bf93ca86fe1b
