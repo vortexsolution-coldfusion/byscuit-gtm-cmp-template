@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [Unreleased]
+
+## [1.0.4] – 2026-04-27
+
+### Added
+- Added conditional debug flag to SDK output logs
+
+### Changed
+- Changed brand ID to `brand_byscuit`
+- Removed encoded char from brand description
+- Changed comments and logs from French to standard English
+- Changed `BYSCUIT_GTM_MANAGED` execute default to false
+
+### Fixed
+- Fixed `clientAnnotations` WEB_PERMISSIONS mappings
+
 ## [1.0.3] – 2026-04-20
 
 ### Added
