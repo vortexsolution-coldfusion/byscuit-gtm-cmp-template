@@ -10,6 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ## [1.1.0] – 2026-04-16
 
 ### Added
+- [`template.tpl`] Added displayName
+
+## [1.1.0] – 2026-04-16
+
+### Added
 - [`template.tpl`] Added Default values for Consent Mode
 
 ## [1.1.0] – 2026-04-15
