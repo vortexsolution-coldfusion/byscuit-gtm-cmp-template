@@ -18,6 +18,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ## [1.0.2] – 2026-04-16
 
 ### Added
+- [`template.tpl`] Added displayName
+- [`template.tpl`] Removed WEB_PERMISSIONS to `consentType`
+- [`template.tpl`] Changed brand ID to `brand_byscuit`
+- [`template.tpl`] Removed encoded char from brand description
+- [`template.tpl`] Changed comments and logs from French to standard English
+
+## [1.1.0] – 2026-04-16
+
+### Added
 - [`template.tpl`] Added Default values for Consent Mode
 
 ## [1.0.1] – 2026-04-15
