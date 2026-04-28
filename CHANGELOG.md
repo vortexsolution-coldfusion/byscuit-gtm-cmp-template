@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.0.5] - 2026-04-28
+
+### Fixed
+- Fixed unintentional dashes in `template.tpl`
+
 ## [1.0.4] – 2026-04-27
 
 ### Added
