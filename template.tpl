@@ -550,3 +550,14 @@ ___NOTES___
 Created on 20/04/2026 16:43:47
 
 
+___TERMS_OF_SERVICE___
+
+By using this template, you agree to the following terms:
+
+1. This template is provided "as is" without warranty of any kind.
+2. The author (Byscuit) shall not be held liable for any damages or data loss resulting from the use of this template.
+3. Users are responsible for ensuring compliance with applicable data protection and privacy laws (including GDPR and other local regulations).
+4. This template interacts with Google Consent Mode and requires proper configuration by the implementer.
+5. By using this template, you agree to use it in accordance with Google's policies and applicable laws.
+
+___END_TERMS_OF_SERVICE___

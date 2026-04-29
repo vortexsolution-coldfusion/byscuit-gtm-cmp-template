@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.0.6] - 2026-04-29
+
+### Fixed
+- Fixed add TERMS_OF_SERVICE in `template.tpl`
+
 ## [1.0.5] - 2026-04-28
 
 ### Fixed
