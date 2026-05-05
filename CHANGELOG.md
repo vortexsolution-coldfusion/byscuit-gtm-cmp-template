@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.0.7] - 2026-05-05
+
+### Changed
+- Removed unnecessary `___END_TERMS_OF_SERVICE___` block from `template.tpl`
+
 ## [1.0.6] - 2026-04-29
 
 ### Added
