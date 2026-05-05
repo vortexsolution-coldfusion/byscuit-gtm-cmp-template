@@ -559,5 +559,3 @@ By using this template, you agree to the following terms:
 3. Users are responsible for ensuring compliance with applicable data protection and privacy laws (including GDPR and other local regulations).
 4. This template interacts with Google Consent Mode and requires proper configuration by the implementer.
 5. By using this template, you agree to use it in accordance with Google's policies and applicable laws.
-
-___END_TERMS_OF_SERVICE___
