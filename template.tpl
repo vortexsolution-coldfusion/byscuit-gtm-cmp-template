@@ -1,4 +1,4 @@
-ï»¿ï»¿___TERMS_OF_SERVICE___
+?___TERMS_OF_SERVICE___
 
 By creating or modifying this file you agree to Google Tag Manager's Community
 Template Gallery Developer Terms of Service available at
@@ -24,7 +24,7 @@ ___INFO___
     "translations": [
       {
         "locale": "fr",
-        "text": "ModÃ¨le personnalisÃ© Google Tag Manager pour l\u0027intÃ©gration de la plateforme de gestion du consentement Byscuit (CMP) avec Google Consent Mode v2."
+        "text": "Modèle personnalisé Google Tag Manager pour l'intégration de la plateforme de gestion du consentement Byscuit (CMP) avec Google Consent Mode v2."
       }
     ]
   },
@@ -120,7 +120,6 @@ if (cookie && cookie.length > 0) {
     personalization_storage: 'denied',
     security_storage: 'granted'
   };
-
   let val = cookie[0];
   if (val.indexOf('analytics') !== -1) currentConsent.analytics_storage = 'granted';
   if (val.indexOf('functional') !== -1) currentConsent.functionality_storage = 'granted';
