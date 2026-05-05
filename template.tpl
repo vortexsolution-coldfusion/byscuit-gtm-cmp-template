@@ -24,7 +24,7 @@ ___INFO___
     "translations": [
       {
         "locale": "fr",
-        "text": "Modèle personnalisé Google Tag Manager pour l'intégration de la plateforme de gestion du consentement Byscuit (CMP) avec Google Consent Mode v2."
+        "text": "Modele personnalise Google Tag Manager pour l'integration de la plateforme de gestion du consentement Byscuit (CMP) avec Google Consent Mode v2."
       }
     ]
   },
