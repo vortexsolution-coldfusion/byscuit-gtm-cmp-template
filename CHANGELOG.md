@@ -11,8 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [1.0.6] - 2026-04-29
 
-### Fixed
-- Fixed add TERMS_OF_SERVICE in `template.tpl`
+### Added
+- Added TERMS_OF_SERVICE to `template.tpl`
 
 ## [1.0.5] - 2026-04-28
 
