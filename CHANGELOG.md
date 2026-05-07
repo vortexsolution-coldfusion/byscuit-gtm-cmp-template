@@ -9,10 +9,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.0.8] - 2026-05-07
+
+### Changed
+- Moved `TERMS_OF_SERVICE` block to beginning of `template.tpl`
+- Removed french accent chars from `template.tpl`
+
+## [1.0.7] - 2026-05-05
+
+### Changed
+- Removed unnecessary `___END_TERMS_OF_SERVICE___` block from `template.tpl`
+
 ## [1.0.6] - 2026-04-29
 
-### Fixed
-- Fixed add TERMS_OF_SERVICE in `template.tpl`
+### Added
+- Added TERMS_OF_SERVICE to `template.tpl`
 
 ## [1.0.5] - 2026-04-28
 

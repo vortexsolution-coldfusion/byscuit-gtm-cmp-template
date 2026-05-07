@@ -2,9 +2,15 @@ homepage: "https://www.byscuit.com"
 documentation: "https://github.com/vortexsolution-coldfusion/byscuit-gtm-cmp-template/blob/master/README.md"
 versions:
   # Latest version
+  - sha: 2f74bc1e0f945ad85ad86a5bb0daa01c53cd88f1
+    changeNotes : Moved TERMS_OF_SERVICE block to beginning of template.tpl and remove french accent chars
+  # Older versions
+  - sha: dfb93fedaa9a5cdb929e08e74cad6f59ebf123a6
+    changeNotes: Removed unnecessary END_TERMS_OF_SERVICE block from template.tpl
+  - sha: f70739fb23b575db9d7b566e9549154d67d5059a
+    changeNotes: Added TERMS_OF_SERVICE to template.tpl
   - sha: 9d69c1b6efe3c89bd88f188b1d81cc866c20b828
     changeNotes: Fixed unintentional dashes in template.tpl
-  # Older versions
   - sha: 26ede28439b6db0b830040e317980b3446e8cd46
     changeNotes: Change brand ID to brand_byscuit, add conditional debug flag, fix clientAnnotations WEB_PERMISSIONS mappings
   - sha: 5bed24bf727c7943e114f402ba23bf93ca86fe1b
