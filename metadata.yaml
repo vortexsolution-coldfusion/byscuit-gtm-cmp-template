@@ -2,7 +2,7 @@ homepage: "https://www.byscuit.com"
 documentation: "https://github.com/vortexsolution-coldfusion/byscuit-gtm-cmp-template/blob/master/README.md"
 versions:
   # Latest version
-  - sha: 2f74bc1e0f945ad85ad86a5bb0daa01c53cd88f1
+  - sha: 6a95d7496be6d7e2c43caae64812ba9859594011
     changeNotes : Moved TERMS_OF_SERVICE block to beginning of template.tpl and remove french accent chars
   # Older versions
   - sha: dfb93fedaa9a5cdb929e08e74cad6f59ebf123a6
